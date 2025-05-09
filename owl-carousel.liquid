@@ -1,0 +1,154 @@
+<div class="simple-product-slider-wrapper">
+  <h2 class="slider-title">{{ section.settings.heading }}</h2>
+  
+  <div class="owl-carousel owl-theme">
+    {% assign collection = collections[section.settings.collection] %}
+    {% if collection and collection.products.size > 0 %}
+      {% for product in collection.products limit: section.settings.product_limit %}
+        <div class="item product-card">
+          <a href="{{ product.url }}">
+            <div class="item-product-card-inner">
+              <img src="{{ product.featured_image | img_url: '400x400', scale: 2 }}" alt="{{ product.title }}">
+            </div>
+            <h3>{{ product.title }}</h3>
+            <p>{{ product.price | money }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No products found.</p>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .simple-product-slider-wrapper {
+    padding: 40px 0;
+  }
+
+  .slider-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .product-card img {
+    width: 100% !important;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .product-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .item.product-card a {
+    text-decoration: none;
+  }
+
+.product-card h3 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+  .product-card p {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 0;
+  }
+
+   button.owl-prev,
+  button.owl-next {
+    background: transparent !important;
+    border-radius: 50% !important;
+    color: #000 !important;
+    outline: none !important;
+    outline: none !important;
+  }
+
+
+.owl-theme .owl-nav {
+    margin-top: 10px;
+    position: absolute;
+    top: -59px;
+    left: 50%;
+    display: flex
+;
+    gap: 160px;
+    transform: translateX(-50%);
+}
+
+  .item-product-card-inner {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    height: 400px;
+  }
+  .owl-nav button {
+    outline: none !important;
+}
+</style>
+
+<script>
+  (function($) {
+    $(document).ready(function(){
+      $('.simple-product-slider-wrapper .owl-carousel').owlCarousel({
+        center: true,
+        loop: true,
+        margin: 10,
+        nav: true,
+        dots: true,
+          navText: [
+      `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"/></svg>`,
+      `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>`
+    ],
+        responsive: {
+          0: { items: 1 },
+          600: { items: 2 },
+          1000: { items: 4 }
+        }
+      });
+    });
+  })(jQuery);
+</script>
+
+{% schema %}
+{
+  "name": "Simple Product Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Slider Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products to show",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Simple Product Slider",
+      "category": "Custom Sections"
+    }
+  ]
+}
+{% endschema %}
